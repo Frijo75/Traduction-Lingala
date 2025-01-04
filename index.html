@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
   <meta name="google-site-verification" content="Uyy3H57rFlaA1MlT8NLGI52H1PYMfTxDLDRTSLf6UGk" />
+  <meta charset="UTF-8">
+  <meta name="description" content="Testez notre API de traduction automatique pour traduire le français vers le lingala moderne. Entrez votre texte et obtenez des traductions fidèles en temps réel.">
+    <meta name="keywords" content="traduction automatique, Lingala moderne, API traduction, test de traduction Lingala, lingala moderne, traduction français vers lingala, traduction lingala vers français">
+    <meta name="author" content="Frijo">
+    <link rel="canonical" href="https://frijo75.github.io/Traduction-Lingala/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Traduction Français - Lingala</title>
   <style>
@@ -10,12 +14,19 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
+      background-color: #f4faf4;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
+     textarea {
+            width: 100%;
+            height: 150px;
+            padding: 1em;
+            margin-top: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     header {
       width: 100%;
       padding: 20px;
@@ -40,7 +51,7 @@
     }
 
     .start-button {
-      background-color: #00796b;
+      background-color: #4CAF50;
       color: white;
       padding: 15px 30px;
       border: none;
@@ -108,19 +119,23 @@
 <body>
 
   <header id="header">
-    <h1>Comparaison: Votre modèle vs. les concurrents</h1>
+    <h1>Testez notre model de traduction Lite</h1>
+    <p>E za nâ bà wodi muke kasi e za mayele makasi</p>
     <div class="header-images">
       <img src="image1.jpg" alt="Votre modèle">
       <img src="image2.jpg" alt="Concurrents">
     </div>
+    <p>Oyo nkota nà biso moko !</p>
     <button class="start-button" id="start-button">Commencer</button>
   </header>
 
   <div class="form-container" id="form-container">
-    <h2>Formulaire de Traduction</h2>
+    <h2>Traduction automatique</h2>
+    <p>Ceci est la version d'essai et nous comptons sur vous pour amélorer les performences du model pour notre langue Lingala</p>
+    <p>Oyo e za version ya komeka pe to zo talela bino pôna ko kolisa makoki ya mideli pôna nkota nà biso Lingala</p>
     <select id="language-select">
-      <option value="fr-lingala">Français → Lingala</option>
-      <option value="lingala-fr">Lingala → Français</option>
+      <option value="francais-lingala">Français → Lingala</option>
+      <option value="lingala-francais">Lingala → Français</option>
     </select>
     <textarea id="text-to-translate" placeholder="Entrez le texte à traduire..."></textarea>
     <button id="translate-button">Traduire</button>
@@ -131,7 +146,7 @@
   </div>
 
   <div class="footer">
-    <a href="mailto:mrfrijo75@gmail.com">Soutenir</a> | <a href="tel:+243810239619">Contacter</a>
+    <a href="mailto:mrfrijo75@gmail.com">Soutenir</a> | <a href="tel:+243810239619">Contacter</a> | <a href="mailto:mrfrijo75@gmail.com">Contribuer</a>
   </div>
 
   <script>
