@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester votre traduction en Lingala moderne - API Démo</title>
+    <meta name="description" content="Testez notre API de traduction automatique pour traduire le français vers le lingala moderne. Entrez votre texte et obtenez des traductions fidèles en temps réel.">
+    <meta name="keywords" content="traduction automatique, Lingala moderne, API traduction, test de traduction Lingala, lingala moderne, traduction français vers lingala">
+    <meta name="author" content="Frijo">
+    <link rel="canonical" href="https://username.github.io/api-traduction-demo/">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 2em;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #f4f7f6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 1em;
+            margin-top: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 1em;
+            padding: 0.75em 2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            margin-top: 1.5em;
+            padding: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Testez votre traduction en Lingala moderne</h1>
+
+    <p>Entrez un texte en français pour le traduire en lingala moderne à l'aide de notre API.</p>
+
+    <form id="translationForm">
+        <label for="inputText">Texte en français :</label><br>
+        <textarea id="inputText" placeholder="Entrez votre texte ici..."></textarea><br>
+        <button type="submit">Lancer la traduction</button>
+    </form>
+
+    <div id="loading" style="display:none;">Chargement...</div>
+    <div id="responseContainer" class="response" style="display:none;"></div>
+    <div id="errorMessage" class="error" style="display:none;"></div>
+
+    <script>
+        document.getElementById('translationForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const inputText = document.getElementById('inputText').value;
+            const responseContainer = document.getElementById('responseContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            const loading = document.getElementById('loading');
+
+            responseContainer.style.display = 'none';
+            errorMessage.style.display = 'none';
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('https://your-api-endpoint.com/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: inputText }),
+                });
+
+                loading.style.display = 'none';
+
+                if (response.ok) {
+                    const result = await response.json();
+                    responseContainer.textContent = `Traduction en Lingala : ${result.translation}`;
+                    responseContainer.style.display = 'block';
+                } else {
+                    errorMessage.textContent = `Erreur : ${response.statusText}`;
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                errorMessage.textContent = `Erreur lors de la requête : ${error.message}`;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
