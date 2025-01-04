@@ -84,17 +84,17 @@
     }
 
     .form-container button {
-      background-color: #00796b;
+      margin-top: 1em;
+      padding: 0.75em 2em;
+      background-color: #4CAF50;
       color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
     }
 
     .form-container button:hover {
-      background-color: #004d40;
+      background-color: #45a049;
     }
 
     .footer {
@@ -107,7 +107,9 @@
       text-decoration: none;
       font-size: 18px;
     }
-
+    .pourbtn {
+     width : 100%;
+    }
     .footer a:hover {
       text-decoration: underline;
     }
@@ -139,7 +141,8 @@
       <option value="lingala-francais">Lingala → Français</option>
     </select>
     <textarea id="text-to-translate" placeholder="Entrez le texte à traduire..."></textarea>
-    <button id="translate-button">Traduire</button>
+    <div class="pourbtn"><button id="translate-button">Traduire</button></div>
+    
     <div id="translation-result" class="hidden">
       <h3>Traduction:</h3>
       <p id="translated-text"></p>
