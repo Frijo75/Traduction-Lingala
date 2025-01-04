@@ -1,114 +1,172 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta name="google-site-verification" content="Uyy3H57rFlaA1MlT8NLGI52H1PYMfTxDLDRTSLf6UGk" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tester votre traduction en Lingala moderne - API Démo</title>
-    <meta name="description" content="Testez notre API de traduction automatique pour traduire le français vers le lingala moderne. Entrez votre texte et obtenez des traductions fidèles en temps réel.">
-    <meta name="keywords" content="traduction automatique, Lingala moderne, API traduction, test de traduction Lingala, lingala moderne, traduction français vers lingala">
-    <meta name="author" content="Frijo">
-    <link rel="canonical" href="https://username.github.io/api-traduction-demo/">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 2em auto;
-            padding: 2em;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #f4f7f6;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 1em;
-            margin-top: 1em;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            margin-top: 1em;
-            padding: 0.75em 2em;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .response {
-            margin-top: 1.5em;
-            padding: 1em;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="Uyy3H57rFlaA1MlT8NLGI52H1PYMfTxDLDRTSLf6UGk" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traduction Français - Lingala</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      padding: 20px;
+      background-color: #004d40;
+      color: white;
+      text-align: center;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .header-images {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .header-images img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .start-button {
+      background-color: #00796b;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    .start-button:hover {
+      background-color: #004d40;
+    }
+
+    .form-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .form-container select,
+    .form-container textarea {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .form-container button {
+      background-color: #00796b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .form-container button:hover {
+      background-color: #004d40;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #00796b;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>Testez votre traduction en Lingala moderne</h1>
 
-    <p>Entrez un texte en français pour le traduire en lingala moderne à l'aide de notre API.</p>
+  <header id="header">
+    <h1>Comparaison: Votre modèle vs. les concurrents</h1>
+    <div class="header-images">
+      <img src="image1.jpg" alt="Votre modèle">
+      <img src="image2.jpg" alt="Concurrents">
+    </div>
+    <button class="start-button" id="start-button">Commencer</button>
+  </header>
 
-    <form id="translationForm">
-        <label for="inputText">Texte en français :</label><br>
-        <textarea id="inputText" placeholder="Entrez votre texte ici..."></textarea><br>
-        <button type="submit">Lancer la traduction</button>
-    </form>
+  <div class="form-container" id="form-container">
+    <h2>Formulaire de Traduction</h2>
+    <select id="language-select">
+      <option value="fr-lingala">Français → Lingala</option>
+      <option value="lingala-fr">Lingala → Français</option>
+    </select>
+    <textarea id="text-to-translate" placeholder="Entrez le texte à traduire..."></textarea>
+    <button id="translate-button">Traduire</button>
+    <div id="translation-result" class="hidden">
+      <h3>Traduction:</h3>
+      <p id="translated-text"></p>
+    </div>
+  </div>
 
-    <div id="loading" style="display:none;">Chargement...</div>
-    <div id="responseContainer" class="response" style="display:none;"></div>
-    <div id="errorMessage" class="error" style="display:none;"></div>
+  <div class="footer">
+    <a href="mailto:mrfrijo75@gmail.com">Soutenir</a> | <a href="tel:+243810239619">Contacter</a>
+  </div>
 
-    <script>
-        document.getElementById('translationForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
+  <script>
+    // Fonction pour afficher le formulaire de traduction au clic sur le bouton "Commencer"
+    document.getElementById('start-button').addEventListener('click', function() {
+      document.getElementById('header').style.opacity = 0; // Fadout du header
+      setTimeout(function() {
+        document.getElementById('header').classList.add('hidden');
+        document.getElementById('form-container').style.display = 'flex';
+      }, 1000);
+    });
 
-            const inputText = document.getElementById('inputText').value;
-            const responseContainer = document.getElementById('responseContainer');
-            const errorMessage = document.getElementById('errorMessage');
-            const loading = document.getElementById('loading');
+    // Fonction de traduction (Simulée ici, vous pouvez ajouter une vraie API de traduction)
+    document.getElementById('translate-button').addEventListener('click', function() {
+      const language = document.getElementById('language-select').value;
+      const textToTranslate = document.getElementById('text-to-translate').value;
 
-            responseContainer.style.display = 'none';
-            errorMessage.style.display = 'none';
-            loading.style.display = 'block';
+      if (!textToTranslate) {
+        alert('Veuillez entrer un texte à traduire.');
+        return;
+      }
 
-            try {
-                const response = await fetch('https://your-api-endpoint.com/predict', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ data: inputText }),
-                });
+      let translatedText = '';
+      if (language === 'fr-lingala') {
+        // Simulez une traduction française → lingala
+        translatedText = `Lingala: ${textToTranslate}`;
+      } else if (language === 'lingala-fr') {
+        // Simulez une traduction lingala → française
+        translatedText = `Français: ${textToTranslate}`;
+      }
 
-                loading.style.display = 'none';
-
-                if (response.ok) {
-                    const result = await response.json();
-                    responseContainer.textContent = `Traduction en Lingala : ${result.translation}`;
-                    responseContainer.style.display = 'block';
-                } else {
-                    errorMessage.textContent = `Erreur : ${response.statusText}`;
-                    errorMessage.style.display = 'block';
-                }
-            } catch (error) {
-                loading.style.display = 'none';
-                errorMessage.textContent = `Erreur lors de la requête : ${error.message}`;
-                errorMessage.style.display = 'block';
-            }
-        });
-    </script>
+      document.getElementById('translated-text').textContent = translatedText;
+      document.getElementById('translation-result').style.display = 'block';
+    });
+  </script>
+  
 </body>
 </html>
