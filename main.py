@@ -3,11 +3,11 @@ from pydantic import BaseModel
 from transformers import MarianMTModel, MarianTokenizer
 
 # Définir le chemin vers votre modèle
-model_name = 'D:\\traduction_project\\translation_fr_li_model'
+model_name = 'https://drive.google.com/drive/folders/12vxuoCVSp3JsQoav1O87tINsTrxpOqIz?usp=sharing'
 
 # Charger le modèle et le tokenizer
-model = MarianMTModel.from_pretrained(model_name, local_files_only=True)
-tokenizer = MarianTokenizer.from_pretrained(model_name, local_files_only=True)
+model = MarianMTModel.from_pretrained(model_name)
+tokenizer = MarianTokenizer.from_pretrained(model_name)
 
 # Initialiser FastAPI
 app = FastAPI()
@@ -21,18 +21,7 @@ class TranslationRequest(BaseModel):
 # Endpoint de test
 @app.get("/")
 def home():
-    model_name = 'D:\\traduction_project\\translation_fr_li_model'
-
-    # Charger le modèle et le tokenizer
-    model = MarianMTModel.from_pretrained(model_name, local_files_only=True)
-    tokenizer = MarianTokenizer.from_pretrained(model_name, local_files_only=True)
-    tokenized_text = tokenizer("Bojour les amis !", return_tensors="pt")
-
-    # Effectuer la traduction
-    translated = model.generate(**tokenized_text)
-
-    # Convertir les tokens traduits en texte
-    translated_text = tokenizer.decode(translated[0], skip_special_tokens=True)
+   
     return {"message": "Bienvenue sur l'API Lingala!"}, {"text sortie":f"{translated_text}"}
 
 # Endpoint pour la traduction
