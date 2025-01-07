@@ -70,10 +70,7 @@
         button:hover {
             transform: translateY(-2px);
         }
-        .vert{
-            background: #4fe271;
-            color: rgb(255, 255, 255);
-        }
+        
         .result {
             margin-top: 20px;
             font-size: 18px;
@@ -105,7 +102,7 @@
         <h1>Traduction Français ⇌ Lingala</h1>
         <textarea id="inputText" placeholder="Saisissez votre texte ici..."></textarea>
         <br>
-        <button class="vert" onclick="translate('fr_lingala')">Français → Lingala</button>
+        <button style=" background: #4fe271; color: rgb(255, 255, 255);" onclick="translate('fr_lingala')">Français → Lingala</button>
         <button onclick="translate('lingala_fr')">Lingala → Français</button>
         <div class="result" id="result">Le résultat s'affichera ici.</div>
         
