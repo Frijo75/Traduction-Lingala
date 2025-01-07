@@ -155,53 +155,43 @@
   </div>
 
  <script>
-    // Fonction pour afficher le formulaire de traduction au clic sur le bouton "Commencer"
-    document.getElementById('start-button').addEventListener('click', function() {
-        document.getElementById('header').style.opacity = 0; // Fade-out du header
-        setTimeout(function() {
-            document.getElementById('header').classList.add('hidden');
-            document.getElementById('form-container').style.display = 'flex';
-        }, 1000);
-    });
-
-    // Fonction de traduction avec une API de Hugging Face
-    document.getElementById('translate-button').addEventListener('click', async function() {
-        const language = document.getElementById('language-select').value;
+    document.getElementById('translate-button').addEventListener('click', async function () {
         const textToTranslate = document.getElementById('text-to-translate').value;
-
+        const languageSelect = document.getElementById('language-select').value;
+        
         if (!textToTranslate) {
             alert('Veuillez entrer un texte à traduire.');
             return;
         }
-
-        const direction = language === 'francais-lingala' ? 'fr->li' : 'li->fr';
-
+        
+        // Définir les langues selon le choix
+        const [srcLang, targetLang] = languageSelect === 'francais-lingala'
+            ? ['fr', 'li']
+            : ['li', 'fr'];
+        
         try {
-            const response = await fetch('https://hf.space/api/space/MrFrijo/LiAPI/run/predict', {
+            const response = await fetch("https://hf.space/api/space/MrFrijo/LiAPI/run/predict", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    direction: direction,
-                    text: textToTranslate
+                    data: [textToTranslate, srcLang, targetLang]
                 })
             });
-
-            if (!response.ok) {
-                throw new Error(`Erreur avec l'API: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            document.getElementById('translated-text').textContent = data.translation;
+            
+            if (!response.ok) throw new Error(`Erreur API : ${response.statusText}`);
+            
+            const result = await response.json();
+            const translatedText = result.data[0];  // Récupérer le texte traduit
+            
+            // Afficher la traduction
+            document.getElementById('translated-text').textContent = translatedText;
             document.getElementById('translation-result').style.display = 'block';
         } catch (error) {
             console.error(error);
-            alert("Une erreur s'est produite lors de la traduction.");
+            alert("Une erreur s'est produite lors de l'appel à l'API : " + error.message);
         }
     });
 </script>
-
   
 </body>
 </html>
