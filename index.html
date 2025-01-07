@@ -122,7 +122,7 @@
        $(document).ready(function(){
         $(".fr_li").on({
             click : function(){
-            alert("debut de traduction")
+            
             inputText = $("#inputText").val();
             $("#result").html("Traduction en cours...");
 
@@ -139,7 +139,7 @@
                     $("#result").text(response.translated_text);
                 },
                 error: function(error) {
-                    $("#result").text("Erreur lors de la traduction. Veuillez réessayer.");
+                    $("#result").text(error);
                 }
             });
             }
