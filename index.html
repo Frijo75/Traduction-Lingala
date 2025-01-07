@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Traducteur français-lingala moderne">
-    <meta name="keywords" content="Traduction Lingala, Lingala Moderne, traduire en lingala, Traduction de franàai en lingala, traduction lingala">
+    <meta name="keywords" content="Traduction Lingala, Lingala Moderne, traduire en lingala, Traduction de français en lingala, traduction lingala">
     <meta name="author" content="Mr. Frijo">
-    <title>Traduction Français Lingala</title>
+    <title>Traduction Français ⇌ Lingala</title>
     <style>
         /* Police Google */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -36,7 +36,6 @@
         textarea {
             width: 100%;
             height: 120px;
-           
             padding: 15px;
             box-sizing: border-box;
             font-size: 16px;
@@ -96,13 +95,14 @@
             padding: 5px;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Traduction Français ⇌ Lingala</h1>
         <textarea id="inputText" placeholder="Saisissez votre texte ici..."></textarea>
         <br>
-        <button style=" background: #4fe271; color: rgb(255, 255, 255);" onclick="translate('fr_lingala')">Français → Lingala</button>
+        <button style="background: #4fe271; color: rgb(255, 255, 255);" onclick="translate('fr_lingala')">Français → Lingala</button>
         <button onclick="translate('lingala_fr')">Lingala → Français</button>
         <div class="result" id="result">Le résultat s'affichera ici.</div>
         
@@ -117,49 +117,52 @@
         &copy; 2025 Traduction Lingala Moderne par Mr. Frijo. Tous droits réservés.
     </footer>
     <script>
-        async function translate(direction) {
-            const inputText = document.getElementById('inputText').value;
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = "Traduction en cours...";
+        // Fonction de traduction utilisant jQuery
+        function translate(direction) {
+            const inputText = $("#inputText").val();
+            $("#result").text("Traduction en cours...");
 
-            try {
-                const response = await fetch('https://liapi.onrender.com/translate/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: inputText, src_lang: direction.split('_')[0], target_lang: direction.split('_')[1] })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    resultDiv.textContent = data.translated_text;
-                } else {
-                    resultDiv.textContent = `Erreur : ${data.error}`;
+            $.ajax({
+                url: "https://liapi.onrender.com/translate/",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ 
+                    text: inputText, 
+                    src_lang: direction.split('_')[0], 
+                    target_lang: direction.split('_')[1] 
+                }),
+                success: function(response) {
+                    $("#result").text(response.translated_text);
+                },
+                error: function(error) {
+                    $("#result").text("Erreur lors de la traduction. Veuillez réessayer.");
                 }
-            } catch (error) {
-                resultDiv.textContent = "Erreur de connexion avec l'API.";
-            }
+            });
         }
 
-        async function evaluateTranslation(feedback) {
-            const resultText = document.getElementById('result').textContent;
+        // Fonction d'évaluation utilisant jQuery
+        function evaluateTranslation(feedback) {
+            const resultText = $("#result").text();
             if (!resultText || resultText === "Le résultat s'affichera ici.") {
                 alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
                 return;
             }
 
-            try {
-                const response = await fetch('https://liapi.onrender.com/evaluate/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ translated_text: resultText, feedback })
-                });
-                if (response.ok) {
+            $.ajax({
+                url: "https://liapi.onrender.com/evaluate/",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ 
+                    translated_text: resultText, 
+                    feedback: feedback 
+                }),
+                success: function() {
                     alert("Merci pour votre évaluation !");
-                } else {
+                },
+                error: function() {
                     alert("Erreur lors de l'envoi de votre évaluation.");
                 }
-            } catch (error) {
-                alert("Erreur de connexion avec l'API pour l'évaluation.");
-            }
+            });
         }
     </script>
 </body>
