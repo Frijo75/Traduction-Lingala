@@ -1,56 +1,102 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta name="google-site-verification" content="Uyy3H57rFlaA1MlT8NLGI52H1PYMfTxDLDRTSLf6UGk" />
- 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Traducteur français-lingala moderne">
     <meta name="keywords" content="Traduction Lingala, Lingala Moderne, traduire en lingala, Traduction de franàai en lingala, traduction lingala">
     <meta name="author" content="Mr. Frijo">
-    <title>Traduction Français ⇌ Lingala</title>
+    <title>Traduction Français Lingala</title>
     <style>
+        /* Police Google */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        
+        /* Style général */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
             padding: 0;
+            background: #f4f4f9;
+            color: #333;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
+            max-width: 700px;
+            margin: 50px auto;
+            background: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px 30px;
             text-align: center;
+        }
+        h1 {
+            font-size: 2.4em;
+            font-weight: 700;
+            color: #444;
         }
         textarea {
             width: 100%;
-            height: 100px;
-            margin: 10px 0;
+            height: 120px;
+           
+            padding: 15px;
+            box-sizing: border-box;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            resize: none;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #007BFF;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:first-child {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        button:last-child {
+            background-color: #28a745;
+            color: #fff;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .vert{
+            background: #4fe271;
+            color: rgb(255, 255, 255);
         }
         .result {
             margin-top: 20px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 500;
+            color: #555;
+            padding: 10px 15px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .rating-section {
+            margin-top: 25px;
+        }
+        .rating-section button {
+            background-color: #ffc107;
             color: #333;
         }
-        .evaluation {
-            margin-top: 20px;
-        }
-        .evaluation button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .loader {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #555;
-            display: none;
+        footer {
+            margin-top: 30px;
+            font-size: 14pt;
+            color: rgb(129, 128, 128);
+            text-align: center;
+            padding: 5px;
         }
     </style>
 </head>
@@ -59,76 +105,60 @@
         <h1>Traduction Français ⇌ Lingala</h1>
         <textarea id="inputText" placeholder="Saisissez votre texte ici..."></textarea>
         <br>
-        <button onclick="translate('fr_lingala')">Français → Lingala</button>
+        <button class="vert" onclick="translate('fr_lingala')">Français → Lingala</button>
         <button onclick="translate('lingala_fr')">Lingala → Français</button>
-        <div class="loader" id="loader">🌀 Chargement...</div>
-        <div class="result" id="result"></div>
-        <div class="evaluation" id="evaluation" style="display:none;">
-            <p>Évaluer cette traduction :</p>
-            <button onclick="evaluateTranslation('positive')">👍 Bien</button>
-            <button onclick="evaluateTranslation('negative')">👎 À améliorer</button>
+        <div class="result" id="result">Le résultat s'affichera ici.</div>
+        
+        <!-- Section d'évaluation -->
+        <div class="rating-section">
+            <h2>Évaluer la traduction</h2>
+            <button onclick="evaluateTranslation('positive')">👍 Positive</button>
+            <button onclick="evaluateTranslation('negative')">👎 Negative</button>
         </div>
     </div>
+    <footer>
+        &copy; 2025 Traduction Lingala Moderne par Mr. Frijo. Tous droits réservés.
+    </footer>
     <script>
-        const API_URL = 'https://liapi.onrender.com';
-
         async function translate(direction) {
             const inputText = document.getElementById('inputText').value;
             const resultDiv = document.getElementById('result');
-            const loader = document.getElementById('loader');
-            const evaluationDiv = document.getElementById('evaluation');
-
-            resultDiv.textContent = "";
-            evaluationDiv.style.display = "none"; // Cache l'évaluation précédente
-            loader.style.display = "block"; // Affiche le loader
-
-            if (!inputText.trim()) {
-                resultDiv.textContent = "Veuillez entrer du texte pour la traduction.";
-                loader.style.display = "none";
-                return;
-            }
+            resultDiv.textContent = "Traduction en cours...";
 
             try {
-                const response = await fetch(`${API_URL}/translate`, {
+                const response = await fetch('https://liapi.onrender.com/translate/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: inputText, direction })
+                    body: JSON.stringify({ text: inputText, src_lang: direction.split('_')[0], target_lang: direction.split('_')[1] })
                 });
                 const data = await response.json();
-
                 if (response.ok) {
-                    resultDiv.textContent = data.translatedText;
-                    evaluationDiv.style.display = "block"; // Montre les options d'évaluation
+                    resultDiv.textContent = data.translated_text;
                 } else {
                     resultDiv.textContent = `Erreur : ${data.error}`;
                 }
             } catch (error) {
                 resultDiv.textContent = "Erreur de connexion avec l'API.";
-            } finally {
-                loader.style.display = "none"; // Cache le loader
             }
         }
 
         async function evaluateTranslation(feedback) {
-            const resultDiv = document.getElementById('result');
-            const translatedText = resultDiv.textContent;
-
-            if (!translatedText) {
-                alert("Aucune traduction à évaluer.");
+            const resultText = document.getElementById('result').textContent;
+            if (!resultText || resultText === "Le résultat s'affichera ici.") {
+                alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
                 return;
             }
 
             try {
-                const response = await fetch(`${API_URL}/evaluate`, {
+                const response = await fetch('https://liapi.onrender.com/evaluate/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ feedback, translatedText })
+                    body: JSON.stringify({ translated_text: resultText, feedback })
                 });
-
                 if (response.ok) {
                     alert("Merci pour votre évaluation !");
                 } else {
-                    alert("Erreur lors de l'envoi de l'évaluation.");
+                    alert("Erreur lors de l'envoi de votre évaluation.");
                 }
             } catch (error) {
                 alert("Erreur de connexion avec l'API pour l'évaluation.");
@@ -137,4 +167,3 @@
     </script>
 </body>
 </html>
-
