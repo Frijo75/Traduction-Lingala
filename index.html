@@ -177,7 +177,7 @@
         const direction = language === 'francais-lingala' ? 'fr->li' : 'li->fr';
 
         try {
-            const response = await fetch('https://huggingface.co/spaces/MrFrijo/LiAPI', {
+            const response = await fetch('https://hf.space/api/space/MrFrijo/LiAPI/run/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
