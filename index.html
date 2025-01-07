@@ -95,33 +95,34 @@
             padding: 5px;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
 </head>
 <body>
     <div class="container">
         <h1>Traduction Français ⇌ Lingala</h1>
         <textarea id="inputText" placeholder="Saisissez votre texte ici..."></textarea>
         <br>
-        <button style="background: #4fe271; color: rgb(255, 255, 255);" onclick="translate('fr_lingala')">Français → Lingala</button>
-        <button onclick="translate('lingala_fr')">Lingala → Français</button>
+        <button style="background: #4fe271; color: rgb(255, 255, 255);" class="fr_li">Français → Lingala</button>
+        <button class="li_fr">Lingala → Français</button>
         <div class="result" id="result">Le résultat s'affichera ici.</div>
         
         <!-- Section d'évaluation -->
         <div class="rating-section">
             <h2>Évaluer la traduction</h2>
-            <button onclick="evaluateTranslation('positive')">👍 Positive</button>
-            <button onclick="evaluateTranslation('negative')">👎 Negative</button>
+            <button class="positive">👍 Positive</button>
+            <button class="negative">👎 Negative</button>
         </div>
     </div>
     <footer>
         &copy; 2025 Traduction Lingala Moderne par Mr. Frijo. Tous droits réservés.
     </footer>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Fonction de traduction utilisant jQuery
+       
        $(document).ready(function(){
-
-            function translate(direction) {
-            const inputText = $("#inputText").val();
+        $(".fr_li").on({
+            click : function(){
+            inputText = $("#inputText").val();
             $("#result").text("Traduction en cours...");
 
             $.ajax({
@@ -130,8 +131,8 @@
                 contentType: "application/json",
                 data: JSON.stringify({ 
                     text: inputText, 
-                    src_lang: direction.split('_')[0], 
-                    target_lang: direction.split('_')[1] 
+                    src_lang: 'fr', 
+                    target_lang: 'li' 
                 }),
                 success: function(response) {
                     $("#result").text(response.translated_text);
@@ -140,23 +141,23 @@
                     $("#result").text("Erreur lors de la traduction. Veuillez réessayer.");
                 }
             });
-        }
-
-        // Fonction d'évaluation utilisant jQuery
-        function evaluateTranslation(feedback) {
-            const resultText = $("#result").text();
+            }
+        })
+            
+        $(".positive").on({
+            click : function(){
+                const resultText = $("#result").text();
             if (!resultText || resultText === "Le résultat s'affichera ici.") {
                 alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
                 return;
-            }
-
-            $.ajax({
+            }else{
+                $.ajax({
                 url: "https://liapi.onrender.com/evaluate/",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({ 
                     translated_text: resultText, 
-                    feedback: feedback 
+                    feedback: "meilleur" 
                 }),
                 success: function() {
                     alert("Merci pour votre évaluation !");
@@ -165,7 +166,37 @@
                     alert("Erreur lors de l'envoi de votre évaluation.");
                 }
             });
-        }
+            }
+            
+            }
+        })
+        $(".negative").on({
+            click : function(){
+                const resultText = $("#result").text();
+            if (!resultText || resultText === "Le résultat s'affichera ici.") {
+                alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
+                return;
+            }else{
+                $.ajax({
+                url: "https://liapi.onrender.com/evaluate/",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ 
+                    translated_text: resultText, 
+                    feedback: "mauvais" 
+                }),
+                success: function() {
+                    alert("Merci pour votre évaluation !");
+                },
+                error: function() {
+                    alert("Erreur lors de l'envoi de votre évaluation.");
+                }
+            });
+            }
+            
+            }
+        })
+     
        })
     </script>
 </body>
