@@ -118,7 +118,9 @@
     </footer>
     <script>
         // Fonction de traduction utilisant jQuery
-        function translate(direction) {
+       $(document).ready(function(){
+
+            function translate(direction) {
             const inputText = $("#inputText").val();
             $("#result").text("Traduction en cours...");
 
@@ -164,6 +166,7 @@
                 }
             });
         }
+       })
     </script>
 </body>
 </html>
