@@ -154,39 +154,54 @@
     <a href="mailto:mrfrijo75@gmail.com">Soutenir</a> | <a href="tel:+243810239619">Contacter</a> | <a href="mailto:mrfrijo75@gmail.com">Contribuer</a>
   </div>
 
-  <script>
+ <script>
     // Fonction pour afficher le formulaire de traduction au clic sur le bouton "Commencer"
     document.getElementById('start-button').addEventListener('click', function() {
-      document.getElementById('header').style.opacity = 0; // Fadout du header
-      setTimeout(function() {
-        document.getElementById('header').classList.add('hidden');
-        document.getElementById('form-container').style.display = 'flex';
-      }, 1000);
+        document.getElementById('header').style.opacity = 0; // Fade-out du header
+        setTimeout(function() {
+            document.getElementById('header').classList.add('hidden');
+            document.getElementById('form-container').style.display = 'flex';
+        }, 1000);
     });
 
-    // Fonction de traduction (Simulée ici, vous pouvez ajouter une vraie API de traduction)
-    document.getElementById('translate-button').addEventListener('click', function() {
-      const language = document.getElementById('language-select').value;
-      const textToTranslate = document.getElementById('text-to-translate').value;
+    // Fonction de traduction avec une API de Hugging Face
+    document.getElementById('translate-button').addEventListener('click', async function() {
+        const language = document.getElementById('language-select').value;
+        const textToTranslate = document.getElementById('text-to-translate').value;
 
-      if (!textToTranslate) {
-        alert('Veuillez entrer un texte à traduire.');
-        return;
-      }
+        if (!textToTranslate) {
+            alert('Veuillez entrer un texte à traduire.');
+            return;
+        }
 
-      let translatedText = '';
-      if (language === 'fr-lingala') {
-        // Simulez une traduction française → lingala
-        translatedText = `Lingala: ${textToTranslate}`;
-      } else if (language === 'lingala-fr') {
-        // Simulez une traduction lingala → française
-        translatedText = `Français: ${textToTranslate}`;
-      }
+        const direction = language === 'francais-lingala' ? 'fr->li' : 'li->fr';
 
-      document.getElementById('translated-text').textContent = translatedText;
-      document.getElementById('translation-result').style.display = 'block';
+        try {
+            const response = await fetch('https://huggingface.co/spaces/MrFrijo/LiAPI', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    direction: direction,
+                    text: textToTranslate
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur avec l'API: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('translated-text').textContent = data.translation;
+            document.getElementById('translation-result').style.display = 'block';
+        } catch (error) {
+            console.error(error);
+            alert("Une erreur s'est produite lors de la traduction.");
+        }
     });
-  </script>
+</script>
+
   
 </body>
 </html>
