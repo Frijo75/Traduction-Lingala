@@ -122,8 +122,9 @@
        $(document).ready(function(){
         $(".fr_li").on({
             click : function(){
+            alert("debut de traduction")
             inputText = $("#inputText").val();
-            $("#result").text("Traduction en cours...");
+            $("#result").html("Traduction en cours...");
 
             $.ajax({
                 url: "https://liapi.onrender.com/translate/",
