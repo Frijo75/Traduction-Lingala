@@ -120,55 +120,31 @@
     <script>
        
        $(document).ready(function(){
-        $(".fr_li").on({
+        $(".posit").on({
             click : function(){
             
             inputText = $("#inputText").val();
             $("#result").html("Traduction en cours...");
 
-            $.ajax({
-                url: "https://liapi.onrender.com/translate/",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ 
-                    text: inputText, 
-                    src_lang: 'fr', 
-                    target_lang: 'li' 
-                }),
-                success: function(response) {
-                    $("#result").text(response.translated_text);
-                },
-                error: function(error) {
-                    $("#result").text(error);
-                }
-            });
-            }
-        })
-            
-        $(".positive").on({
-            click : function(){
-                const resultText = $("#result").text();
-            if (!resultText || resultText === "Le résultat s'affichera ici.") {
-                alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
-                return;
-            }else{
-                $.ajax({
-                url: "https://liapi.onrender.com/evaluate/",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ 
-                    translated_text: resultText, 
-                    feedback: "meilleur" 
-                }),
-                success: function() {
-                    alert("Merci pour votre évaluation !");
-                },
-                error: function() {
-                    alert("Erreur lors de l'envoi de votre évaluation.");
-                }
-            });
-            }
-            
+               $.ajax({
+                    url: "https://liapi.onrender.com/translate/",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ 
+                        text: inputText, 
+                        src_lang: 'fr', 
+                        target_lang: 'li' 
+                    }),
+                    success: function(response) {
+                        $("#result").text(response.translated_text);
+                    },
+                    error: function(xhr) {
+                        const errorMessage = xhr.responseJSON?.detail || "Une erreur est survenue lors de la traduction.";
+                        $("#result").text(errorMessage);
+                    }
+                });
+
+
             }
         })
         $(".negative").on({
@@ -178,25 +154,56 @@
                 alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
                 return;
             }else{
-                $.ajax({
-                url: "https://liapi.onrender.com/evaluate/",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ 
-                    translated_text: resultText, 
-                    feedback: "mauvais" 
-                }),
-                success: function() {
-                    alert("Merci pour votre évaluation !");
-                },
-                error: function() {
-                    alert("Erreur lors de l'envoi de votre évaluation.");
-                }
-            });
+               $.ajax({
+                    url: "https://liapi.onrender.com/evaluate/",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ 
+                        translated_text: resultText, 
+                        feedback: "negative" // ou "negative"
+                    }),
+                    success: function() {
+                        alert("Merci pour votre évaluation !");
+                    },
+                    error: function(xhr) {
+                        const errorMessage = xhr.responseJSON?.detail || "Une erreur est survenue lors de l'évaluation.";
+                        alert(errorMessage);
+                    }
+                });
+
             }
             
             }
         })
+        $(".positive").on({
+            click : function(){
+                const resultText = $("#result").text();
+            if (!resultText || resultText === "Le résultat s'affichera ici.") {
+                alert("Veuillez d'abord effectuer une traduction avant de donner votre avis.");
+                return;
+            }else{
+               $.ajax({
+                    url: "https://liapi.onrender.com/evaluate/",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ 
+                        translated_text: resultText, 
+                        feedback: "positive" // ou "negative"
+                    }),
+                    success: function() {
+                        alert("Merci pour votre évaluation !");
+                    },
+                    error: function(xhr) {
+                        const errorMessage = xhr.responseJSON?.detail || "Une erreur est survenue lors de l'évaluation.";
+                        alert(errorMessage);
+                    }
+                });
+
+            }
+            
+            }
+        })
+       
      
        })
     </script>
